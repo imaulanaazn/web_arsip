@@ -16,10 +16,24 @@
                     <small class="d-block text-secondary">{{ __('model.letter.letter_date') }}</small>
                     {{ $letter->formatted_letter_date }}
                 </div>
-                @if($letter->type == 'incoming')
+                @if(($letter->type == 'incoming') &&  (auth()->user()->role == 'admin' || auth()->user()->role == 'kepsek'))
+                <div class="mx-3">
+                    <a href="{{ route('transaction.disposition.index', $letter) }}"
+                    class="btn btn-primary btn">{{ __('model.letter.dispose') }} <span>({{ $letter->dispositions->count() }})</span></a>
+                </div>
+                @elseif(($letter->type == 'outgoing') &&  (auth()->user()->role == 'admin' || auth()->user()->role == 'kepsek'))
                     <div class="mx-3">
-                        <a href="{{ route('transaction.disposition.index', $letter) }}"
-                           class="btn btn-primary btn">{{ __('model.letter.dispose') }} <span>({{ $letter->dispositions->count() }})</span></a>
+                        @if(!$letter->content)
+                            <button class="btn btn-secondary btn" disabled="true">Sahkan</button>
+                        @elseif($letter->content && $letter->signed)
+                            <button class="btn btn-secondary btn" disabled="true">Disahkan</button>
+                        @elseif($letter->content && !$letter->signed)
+                        <form action="{{ route('transaction.outgoing.sign', $letter) }}" method="POST">
+                              @csrf
+                            <button type="submit"
+                            class="btn btn-primary btn">Sahkan</button>
+                        </form>
+                        @endif
                     </div>
                 @endif
                 <div class="dropdown d-inline-block">
@@ -35,15 +49,17 @@
                                 <a class="dropdown-item"
                                    href="{{ route('transaction.incoming.show', $letter) }}">{{ __('menu.general.view') }}</a>
                             @endif
-                            <a class="dropdown-item"
-                               href="{{ route('transaction.incoming.edit', $letter) }}">{{ __('menu.general.edit') }}</a>
-                            <form action="{{ route('transaction.incoming.destroy', $letter) }}" class="d-inline"
-                                  method="post">
-                                @csrf
-                                @method('DELETE')
-                                <span
+                            @if(auth()->user()->role == 'admin' || auth()->user()->role == 'tatausaha')
+                                <a class="dropdown-item"
+                                href="{{ route('transaction.incoming.edit', $letter) }}">{{ __('menu.general.edit') }}</a>
+                                <form action="{{ route('transaction.incoming.destroy', $letter) }}" class="d-inline"
+                                    method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <span
                                     class="dropdown-item cursor-pointer btn-delete">{{ __('menu.general.delete') }}</span>
-                            </form>
+                                </form>
+                            @endif
                         </div>
                     @else
                         <div class="dropdown-menu dropdown-menu-end"
@@ -52,15 +68,20 @@
                                 <a class="dropdown-item"
                                    href="{{ route('transaction.outgoing.show', $letter) }}">{{ __('menu.general.view') }}</a>
                             @endif
-                            <a class="dropdown-item"
-                               href="{{ route('transaction.outgoing.edit', $letter) }}">{{ __('menu.general.edit') }}</a>
-                            <form action="{{ route('transaction.outgoing.destroy', $letter) }}" class="d-inline"
-                                  method="post">
+                            @if(auth()->user()->role == 'admin' || auth()->user()->role == 'tatausaha')
+                                <a class="dropdown-item"
+                                href="{{ route('transaction.outgoing.edit', $letter) }}">{{ __('menu.general.edit') }}</a>
+                                <form action="{{ route('transaction.outgoing.destroy', $letter) }}" class="d-inline"
+                                method="post">
                                 @csrf
-                                @method('DELETE')
-                                <span
+                                    @method('DELETE')
+                                    <span
                                     class="dropdown-item cursor-pointer btn-delete">{{ __('menu.general.delete') }}</span>
-                            </form>
+                                </form>
+                            @endif
+                            @if($letter->content)
+                                <a class="dropdown-item" target="_blank" href="{{ route('transaction.outgoing.print',  [$letter]) }}">Cetak</a>
+                            @endif
                         </div>
                     @endif
                 </div>
@@ -72,21 +93,26 @@
         <p>{{ $letter->description }}</p>
         <div class="d-flex justify-content-between flex-column flex-sm-row">
             <small class="text-secondary">{{ $letter->note }}</small>
-            @if(count($letter->attachments))
-                <div>
+            <div>
+                @if($letter->content)
+                    <a href="{{ route('transaction.outgoing.print',  [$letter])  }}" target="_blank">
+                        <i class="bx bxs-file-pdf display-6 cursor-pointer text-primary"></i>
+                    </a>
+                    @endif
+                    @if(count($letter->attachments))
                     @foreach($letter->attachments as $attachment)
-                        <a href="{{ $attachment->path_url }}" target="_blank">
-                            @if($attachment->extension == 'pdf')
-                                <i class="bx bxs-file-pdf display-6 cursor-pointer text-primary"></i>
-                            @elseif(in_array($attachment->extension, ['jpg', 'jpeg']))
-                                <i class="bx bxs-file-jpg display-6 cursor-pointer text-primary"></i>
-                            @elseif($attachment->extension == 'png')
-                                <i class="bx bxs-file-png display-6 cursor-pointer text-primary"></i>
-                            @endif
-                        </a>
-                    @endforeach
-                </div>
-            @endif
+                    <a href="{{ $attachment->path_url }}" target="_blank">
+                        @if($attachment->extension == 'pdf' || $attachment->extension == 'html')
+                        <i class="bx bxs-file-pdf display-6 cursor-pointer text-primary"></i>
+                        @elseif(in_array($attachment->extension, ['jpg', 'jpeg']))
+                        <i class="bx bxs-file-jpg display-6 cursor-pointer text-primary"></i>
+                        @elseif($attachment->extension == 'png')
+                        <i class="bx bxs-file-png display-6 cursor-pointer text-primary"></i>
+                        @endif
+                    </a>
+                @endforeach
+                @endif
+            </div>
         </div>
         {{ $slot }}
     </div>

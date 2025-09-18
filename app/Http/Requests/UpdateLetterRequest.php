@@ -50,6 +50,8 @@ class UpdateLetterRequest extends FormRequest
             'description' => ['required'],
             'note' => ['nullable'],
             'classification_code' => ['required'],
+            'status' => ['nullable'],
+            'content' => ['nullable'],
         ];
     }
 }

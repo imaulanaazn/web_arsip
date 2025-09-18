@@ -22,7 +22,7 @@ class StoreDispositionRequest extends FormRequest
             'to' => __('model.disposition.to'),
             'content' => __('model.disposition.content'),
             'due_date' => __('model.disposition.due_date'),
-            'letter_status' => __('model.disposition.status'),
+            'status' => __('model.disposition.status'),
             'note' => __('model.disposition.note'),
         ];
     }
@@ -38,7 +38,7 @@ class StoreDispositionRequest extends FormRequest
             'to' => ['required'],
             'content' => ['required'],
             'due_date' => ['required'],
-            'letter_status' => ['required'],
+            'status' => ['required'],
             'note' => ['nullable'],
         ];
     }

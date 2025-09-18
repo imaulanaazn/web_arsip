@@ -27,6 +27,9 @@ return new class extends Migration
             $table->string('classification_code');
             $table->foreign('classification_code')->references('code')->on('classifications');
             $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate();
+            $table->boolean("signed")->default('0');
+            $table->foreignId('status')->constrained('letter_statuses', 'id')->cascadeOnDelete();
+            $table->longText('content')->nullable();
             $table->timestamps();
         });
     }

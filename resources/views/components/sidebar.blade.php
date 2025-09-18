@@ -1,7 +1,7 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="{{ route('home') }}" class="app-brand-link">
-            <img src="{{ asset('logo-black.png') }}" alt="{{ config('app.name') }}" width="35">
+            <img src="{{ asset('logo-mabos.png') }}" alt="{{ config('app.name') }}" width="35">
             <span class="app-brand-text demo text-black fw-bolder ms-2">{{ config('app.name') }}</span>
         </a>
 
@@ -68,7 +68,7 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">{{ __('menu.header.other_menu') }}</span>
         </li>
-        <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('gallery.*') ? 'active open' : '' }}">
+        <!-- <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('gallery.*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-images"></i>
                 <div data-i18n="{{ __('menu.gallery.menu') }}">{{ __('menu.gallery.menu') }}</div>
@@ -87,34 +87,42 @@
                     </a>
                 </li>
             </ul>
+        </li> -->
+
+        <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('rekapan.*') ? 'active' : '' }}">
+            <a href="{{ route('rekapan.show') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user-pin"></i>
+                <div data-i18n="{{ __('menu.users') }}">Rekapan</div>
+            </a>
         </li>
+
         @if(auth()->user()->role == 'admin')
-            <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('reference.*') ? 'active open' : '' }}">
-                <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons bx bx-analyse"></i>
-                    <div data-i18n="{{ __('menu.reference.menu') }}">{{ __('menu.reference.menu') }}</div>
-                </a>
-                <ul class="menu-sub">
-                    <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('reference.classification.*') ? 'active' : '' }}">
-                        <a href="{{ route('reference.classification.index') }}" class="menu-link">
-                            <div
-                                data-i18n="{{ __('menu.reference.classification') }}">{{ __('menu.reference.classification') }}</div>
-                        </a>
-                    </li>
-                    <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('reference.status.*') ? 'active' : '' }}">
-                        <a href="{{ route('reference.status.index') }}" class="menu-link">
-                            <div data-i18n="{{ __('menu.reference.status') }}">{{ __('menu.reference.status') }}</div>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <!-- User Management -->
-            <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('user.*') ? 'active' : '' }}">
-                <a href="{{ route('user.index') }}" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-user-pin"></i>
-                    <div data-i18n="{{ __('menu.users') }}">{{ __('menu.users') }}</div>
-                </a>
-            </li>
+        <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('reference.*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-analyse"></i>
+                <div data-i18n="{{ __('menu.reference.menu') }}">{{ __('menu.reference.menu') }}</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('reference.classification.*') ? 'active' : '' }}">
+                    <a href="{{ route('reference.classification.index') }}" class="menu-link">
+                        <div
+                            data-i18n="{{ __('menu.reference.classification') }}">{{ __('menu.reference.classification') }}</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('reference.status.*') ? 'active' : '' }}">
+                    <a href="{{ route('reference.status.index') }}" class="menu-link">
+                        <div data-i18n="{{ __('menu.reference.status') }}">{{ __('menu.reference.status') }}</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- User Management -->
+        <li class="menu-item {{ \Illuminate\Support\Facades\Route::is('user.*') ? 'active' : '' }}">
+            <a href="{{ route('user.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user-pin"></i>
+                <div data-i18n="{{ __('menu.users') }}">{{ __('menu.users') }}</div>
+            </a>
+        </li>
         @endif
     </ul>
 </aside>

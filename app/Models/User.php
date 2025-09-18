@@ -79,7 +79,7 @@ class User extends Authenticatable
 
     public function scopeSearch($query, $search)
     {
-        return $query->when($search, function($query, $find) {
+        return $query->when($search, function ($query, $find) {
             return $query
                 ->where('name', 'LIKE', $find . '%')
                 ->orWhere('phone', $find)
@@ -91,7 +91,10 @@ class User extends Authenticatable
     {
         return $query
             ->search($search)
-            ->role(Role::STAFF)
+            ->where(function ($q) {
+                $q->where('role', Role::TATAUSAHA->status())
+                  ->orWhere('role', Role::KEPSEK->status());
+            })
             ->paginate(Config::getValueByCode(ConfigEnum::PAGE_SIZE))
             ->appends([
                 'search' => $search,

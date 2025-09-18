@@ -22,7 +22,7 @@ return [
     'disposition' => [
         'to' => 'Penerima',
         'content' => 'Isi Disposisi',
-        'status' => 'Sifat Status',
+        'status' => 'Status',
         'note' => 'Catatan',
         'due_date' => 'Tenggat Waktu',
         'notice_me' => 'Disposisi untuk surat dengan nomor :reference_number.',
@@ -33,7 +33,7 @@ return [
         'description' => 'Uraian',
     ],
     'status' => [
-        'status' => 'Sifat Status',
+        'status' => 'Status',
     ],
     'user' => [
         'name' => 'Nama',
@@ -44,7 +44,8 @@ return [
         'is_active' => 'Masih Aktif?',
         'picture' => 'Foto Profil',
         'admin' => 'Pengelola',
-        'staff' => 'Staf',
+        'tatausaha' => 'Tata Usaha',
+        'kepsek' => 'Kepala Sekolah',
         'active' => 'Aktif',
         'nonactive' => 'Nonaktif',
         'reset_password' => 'Setel ulang Kata Sandi menjadi bawaan?',

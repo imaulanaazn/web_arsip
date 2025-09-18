@@ -10,6 +10,10 @@ use App\Models\LetterStatus;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use App\Models\Config;
+
+
+use Illuminate\Support\Facades\App;
 
 class DispositionController extends Controller
 {
@@ -39,7 +43,7 @@ class DispositionController extends Controller
     {
         return view('pages.transaction.disposition.create', [
             'letter' => $letter,
-            'statuses' => LetterStatus::all(),
+            // 'statuses' => LetterStatus::all(),
         ]);
     }
 
@@ -77,7 +81,7 @@ class DispositionController extends Controller
         return view('pages.transaction.disposition.edit', [
             'data' => $disposition,
             'letter' => $letter,
-            'statuses' => LetterStatus::all(),
+            // 'statuses' => LetterStatus::all(),
         ]);
     }
 
@@ -114,5 +118,14 @@ class DispositionController extends Controller
         } catch (\Throwable $exception) {
             return back()->with('error', $exception->getMessage());
         }
+    }
+
+     public function print(Letter $letter, Disposition $disposition): View
+    {
+        // dd($disposition);
+        return view('pages.transaction.disposition.print', [
+            'disposition' => $disposition,
+            'letter' => $letter,
+        ]);
     }
 }

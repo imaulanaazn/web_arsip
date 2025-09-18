@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Surat Keluar</title>
+  <title>Surat Disposisi</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 40px; }
     .header {
@@ -22,7 +22,7 @@
       border-collapse: collapse;
       margin-top: 20px;
     }
-    table, td {
+    table, th, td {
       border: 1px solid black;
     }
     td {
@@ -43,50 +43,60 @@
     <p>Alamat: Jl. Kp. Baru, Gandasuli, Kec. Bobotsari, Kabupaten Purbalingga, Jawa Tengah 53353 Telp. (021) XXXXXXXX</p>
   </div>
 
-  <h3 style="text-align:center;">SURAT</h3>
+  <h3 style="text-align:center;">SURAT DISPOSISI</h3>
 
   <table>
+    <tr>
+      <td width="30%">Nomor Agenda</td>
+      <td>{{$letter->agenda_number}}</td>
+    </tr>
     <tr>
       <td width="30%">Nomor Surat</td>
       <td>{{$letter->reference_number}}</td>
     </tr>
     <tr>
-      <td>Lampiran</td>
-      <td>-</td>
+      <td>Tanggal Surat</td>
+      <td>{{$letter->letter_date}}</td>
+    </tr>
+    <tr>
+      <td>Dari</td>
+      <td>{{$letter->from}}</td>
     </tr>
     <tr>
       <td>Perihal</td>
       <td>...................................................</td>
     </tr>
     <tr>
-      <td>Tanggal</td>
-      <td>{{$letter->created_at}}</td>
+      <td>Tanggal Terima</td>
+      <td>{{$letter->received_date}}</td>
     </tr>
     <tr>
-      <td>Kepada Yth</td>
-      <td>
-        {{$letter->to}}
-      </td>
+      <td>Diteruskan Kepada</td>
+      <td>{{$disposition->to}}</td>
+      <!-- <td>
+        ☐ Wakasek Kurikulum <br>
+        ☐ Wakasek Kesiswaan <br>
+        ☐ Wakasek Sarpras <br>
+        ☐ Tata Usaha <br>
+        ☐ Guru/Staf Terkait <br>
+        ☐ Arsip
+      </td> -->
     </tr>
     <tr>
-      <td>Isi Surat</td>
-      <td style="height:150px;">
-        {!! $letter->content !!}
-      </td>
+      <td>Instruksi / Disposisi</td>
+      <td style="height:80px;">{{$disposition->content}}</td>
+    </tr>
+    <tr>
+      <td>Catatan</td>
+      <td style="height:60px;">{{$disposition->note}}</td>
     </tr>
   </table>
 
-    <div class="footer">
-        <p>Kepala Sekolah,</p>
-
-        @if($letter->signed)
-            <img src="/logo-mabos.png" alt="Tanda Tangan" class="ttd" width="80" style="margin-right: 15px;">
-        @else
-            <br><br><br>
-        @endif
-
-        <p><b>Kepala Sekolah</b><br>
-        NIP. 12345567</p>
-    </div>
+  <div class="footer">
+    <p>Kepala Sekolah,</p>
+    <br><br><br>
+    <p><b>(Nama Kepala Sekolah)</b><br>
+    NIP. ....................................</p>
+  </div>
 </body>
 </html>

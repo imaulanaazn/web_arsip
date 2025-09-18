@@ -30,6 +30,9 @@ class Letter extends Model
         'type',
         'classification_code',
         'user_id',
+        'signed',
+        'status',
+        'content',
     ];
 
     /**
@@ -47,19 +50,23 @@ class Letter extends Model
         'formatted_updated_at',
     ];
 
-    public function getFormattedLetterDateAttribute(): string {
+    public function getFormattedLetterDateAttribute(): string
+    {
         return Carbon::parse($this->letter_date)->isoFormat('dddd, D MMMM YYYY');
     }
 
-    public function getFormattedReceivedDateAttribute(): string {
+    public function getFormattedReceivedDateAttribute(): string
+    {
         return Carbon::parse($this->received_date)->isoFormat('dddd, D MMMM YYYY');
     }
 
-    public function getFormattedCreatedAtAttribute(): string {
+    public function getFormattedCreatedAtAttribute(): string
+    {
         return $this->created_at->isoFormat('dddd, D MMMM YYYY, HH:mm:ss');
     }
 
-    public function getFormattedUpdatedAtAttribute(): string {
+    public function getFormattedUpdatedAtAttribute(): string
+    {
         return $this->updated_at->isoFormat('dddd, D MMMM YYYY, HH:mm:ss');
     }
 
@@ -88,9 +95,30 @@ class Letter extends Model
         return $query->whereDate('created_at', now()->addDays(-1));
     }
 
+    public function scopeThisMonth($query)
+    {
+        return $query->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year);
+    }
+
+    public function scopePreviousMonth($query)
+    {
+        $previousMonth = now()->subMonth();
+        return $query->whereMonth('created_at', $previousMonth->month)
+            ->whereYear('created_at', $previousMonth->year);
+    }
+
+    public function scopeAgenda($query, $since, $until, $filter)
+    {
+        return $query
+            ->when($since && $until && $filter, function ($query, $condition) use ($since, $until, $filter) {
+                return $query->whereBetween(DB::raw('DATE(' . $filter . ')'), [$since, $until]);
+            });
+    }
+
     public function scopeSearch($query, $search)
     {
-        return $query->when($search, function($query, $find) {
+        return $query->when($search, function ($query, $find) {
             return $query
                 ->where('reference_number', $find)
                 ->orWhere('agenda_number', $find)
@@ -111,11 +139,25 @@ class Letter extends Model
             ]);
     }
 
-    public function scopeAgenda($query, $since, $until, $filter)
+    public function scopeIncomingFilter($query, $since, $until, $filter, $status)
     {
         return $query
             ->when($since && $until && $filter, function ($query, $condition) use ($since, $until, $filter) {
                 return $query->whereBetween(DB::raw('DATE(' . $filter . ')'), [$since, $until]);
+            })
+            ->when($status, function ($query) use ($status) {
+                $query->where('status', $status);
+            });
+    }
+
+    public function scopeOutgoingFilter($query, $since, $until, $filter, $status)
+    {
+        return $query
+            ->when($since && $until && $filter, function ($query, $condition) use ($since, $until, $filter) {
+                return $query->whereBetween(DB::raw('DATE(' . $filter . ')'), [$since, $until]);
+            })
+            ->when(!is_null($status), function ($query) use ($status) {
+                $query->where('signed', $status);
             });
     }
 

@@ -347,7 +347,7 @@ CREATE TABLE `users` (
   `two_factor_secret` text COLLATE utf8mb4_unicode_ci,
   `two_factor_recovery_codes` text COLLATE utf8mb4_unicode_ci,
   `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'staff',
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'tatausaha',
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `profile_picture` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,

@@ -1,9 +1,9 @@
 @extends('layout.main')
 
 @section('content')
-    <x-breadcrumb
+    <!-- <x-breadcrumb
         :values="[__('navbar.profile.settings')]">
-    </x-breadcrumb>
+    </x-breadcrumb> -->
 
     <div class="row">
         <div class="col">

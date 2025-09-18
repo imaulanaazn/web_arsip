@@ -1,8 +1,14 @@
+<?php
+$statuses = ["diarsipkan" => "Diarsipkan", "diproses" => "Diproses", "selesai" => "Selesai"];
+?>
+
 <div class="card mb-4">
     <div class="card-header pb-0">
         <div class="d-flex justify-content-between flex-column flex-sm-row">
             <div class="card-title">
-                <h5 class="text-nowrap mb-0 fw-bold">{{ $disposition->status?->status }}</h5>
+                @foreach($statuses as $key => $status)
+                    <h5 class="text-nowrap mb-0 fw-bold">{{ $key == $disposition->status ? $status : "" }}</h5>
+                @endforeach
                 <small class="text-black">{{ $disposition->to }}</small>
             </div>
             <div class="card-title d-flex flex-row">
@@ -18,13 +24,15 @@
                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-disposition-{{ $disposition->id }}">
                         <a class="dropdown-item"
                            href="{{ route('transaction.disposition.edit', [$letter, $disposition]) }}">{{ __('menu.general.edit') }}</a>
-                        <form action="{{ route('transaction.disposition.destroy', [$letter, $disposition]) }}" class="d-inline"
-                              method="post">
-                            @csrf
-                            @method('DELETE')
-                            <span
-                                class="dropdown-item cursor-pointer btn-delete">{{ __('menu.general.delete') }}</span>
+                           <form action="{{ route('transaction.disposition.destroy', [$letter, $disposition]) }}" class="d-inline"
+                           method="post">
+                           @csrf
+                           @method('DELETE')
+                           <span
+                           class="dropdown-item cursor-pointer btn-delete">{{ __('menu.general.delete') }}</span>
                         </form>
+                        <a class="dropdown-item"
+                           href="{{ route('transaction.disposition.print',  [$letter, $disposition]) }}">Cetak</a>
                     </div>
                 </div>
             </div>

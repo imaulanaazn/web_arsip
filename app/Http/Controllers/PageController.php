@@ -28,28 +28,35 @@ class PageController extends Controller
      */
     public function index(Request $request): View
     {
-        $todayIncomingLetter = Letter::incoming()->today()->count();
-        $todayOutgoingLetter = Letter::outgoing()->today()->count();
-        $todayDispositionLetter = Disposition::today()->count();
-        $todayLetterTransaction = $todayIncomingLetter + $todayOutgoingLetter + $todayDispositionLetter;
+        $thisMonthIncomingLetter = Letter::incoming()->thisMonth()->count();
+        $thisMonthOutgoingLetter = Letter::outgoing()->thisMonth()->count();
+        $thisMonthDispositionLetter = Disposition::thisMonth()->count();
+        $thisMonthLetterTransaction = $thisMonthIncomingLetter + $thisMonthOutgoingLetter + $thisMonthDispositionLetter;
 
-        $yesterdayIncomingLetter = Letter::incoming()->yesterday()->count();
-        $yesterdayOutgoingLetter = Letter::outgoing()->yesterday()->count();
-        $yesterdayDispositionLetter = Disposition::yesterday()->count();
-        $yesterdayLetterTransaction = $yesterdayIncomingLetter + $yesterdayOutgoingLetter + $yesterdayDispositionLetter;
+        $previousMonthIncomingLetter = Letter::incoming()->previousMonth()->count();
+        $previousMonthOutgoingLetter = Letter::outgoing()->previousMonth()->count();
+        $previousMonthDispositionLetter = Disposition::previousMonth()->count();
+        $previousMonthLetterTransaction = $previousMonthIncomingLetter + $previousMonthOutgoingLetter + $previousMonthDispositionLetter;
+
+        $thisMonthIncomingLetter = Letter::incoming()->thisMonth()->count();
+        $thisMonthOutgoingLetter = Letter::outgoing()->thisMonth()->count();
+        $thisMonthDispositionLetter = Disposition::thisMonth()->count();
 
         return view('pages.dashboard', [
             'greeting' => GeneralHelper::greeting(),
             'currentDate' => Carbon::now()->isoFormat('dddd, D MMMM YYYY'),
-            'todayIncomingLetter' => $todayIncomingLetter,
-            'todayOutgoingLetter' => $todayOutgoingLetter,
-            'todayDispositionLetter' => $todayDispositionLetter,
-            'todayLetterTransaction' => $todayLetterTransaction,
+            'thisMonthIncomingLetter' => $thisMonthIncomingLetter,
+            'thisMonthOutgoingLetter' => $thisMonthOutgoingLetter,
+            'thisMonthDispositionLetter' => $thisMonthDispositionLetter,
+            'thisMonthLetterTransaction' => $thisMonthLetterTransaction,
+            'thisMonthIncomingLetter' => $thisMonthIncomingLetter,
+            'thisMonthOutgoingLetter' => $thisMonthOutgoingLetter,
+            'thisMonthDispositionLetter' => $thisMonthDispositionLetter,
             'activeUser' => User::active()->count(),
-            'percentageIncomingLetter' => GeneralHelper::calculateChangePercentage($yesterdayIncomingLetter, $todayIncomingLetter),
-            'percentageOutgoingLetter' => GeneralHelper::calculateChangePercentage($yesterdayOutgoingLetter, $todayOutgoingLetter),
-            'percentageDispositionLetter' => GeneralHelper::calculateChangePercentage($yesterdayDispositionLetter, $todayDispositionLetter),
-            'percentageLetterTransaction' => GeneralHelper::calculateChangePercentage($yesterdayLetterTransaction, $todayLetterTransaction),
+            'percentageIncomingLetter' => GeneralHelper::calculateChangePercentage($previousMonthIncomingLetter, $thisMonthIncomingLetter),
+            'percentageOutgoingLetter' => GeneralHelper::calculateChangePercentage($previousMonthOutgoingLetter, $thisMonthOutgoingLetter),
+            'percentageDispositionLetter' => GeneralHelper::calculateChangePercentage($previousMonthDispositionLetter, $thisMonthDispositionLetter),
+            'percentageLetterTransaction' => GeneralHelper::calculateChangePercentage($previousMonthLetterTransaction, $thisMonthLetterTransaction),
         ]);
     }
 
@@ -73,14 +80,14 @@ class PageController extends Controller
         try {
             $newProfile = $request->validated();
             if ($request->hasFile('profile_picture')) {
-//               DELETE OLD PICTURE
+                //               DELETE OLD PICTURE
                 $oldPicture = auth()->user()->profile_picture;
                 if (str_contains($oldPicture, '/storage/avatars/')) {
                     $url = parse_url($oldPicture, PHP_URL_PATH);
                     Storage::delete(str_replace('/storage', 'public', $url));
                 }
 
-//                UPLOAD NEW PICTURE
+                //                UPLOAD NEW PICTURE
                 $filename = time() .
                     '-' . $request->file('profile_picture')->getFilename() .
                     '.' . $request->file('profile_picture')->getClientOriginalExtension();

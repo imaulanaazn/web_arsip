@@ -1,10 +1,13 @@
 @extends('layout.main')
 
 @section('content')
-    <x-breadcrumb
+    <!-- <x-breadcrumb
         :values="[__('menu.transaction.menu'), $letter->reference_number, __('menu.transaction.disposition_letter')]">
         <a href="{{ route('transaction.disposition.create', $letter) }}" class="btn btn-primary">{{ __('menu.general.create') }}</a>
-    </x-breadcrumb>
+    </x-breadcrumb> -->
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('transaction.disposition.create', $letter) }}" class="btn btn-primary">{{ __('menu.general.create') }}</a>
+    </div>
 
     <div class="alert alert-primary alert-dismissible" role="alert">
         {{ __('model.disposition.notice_me', ['reference_number' => $letter->reference_number]) }} <a href="{{ route('transaction.incoming.show', $letter) }}" class="fw-bold">{{ __('menu.general.view') }}</a>

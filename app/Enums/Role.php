@@ -5,13 +5,15 @@ namespace App\Enums;
 enum Role
 {
     case ADMIN;
-    case STAFF;
+    case TATAUSAHA;
+    case KEPSEK;
 
     public function status(): string
     {
         return match ($this) {
             self::ADMIN => 'admin',
-            self::STAFF => 'staff',
+            self::TATAUSAHA => 'tatausaha',
+            self::KEPSEK => 'kepsek',
         };
     }
 }

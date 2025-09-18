@@ -26,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('profile.update');
     Route::put('profile/deactivate', [\App\Http\Controllers\PageController::class, 'deactivate'])
         ->name('profile.deactivate')
-        ->middleware(['role:staff']);
+        ->middleware(['role:tatausaha']);
 
     Route::get('settings', [\App\Http\Controllers\PageController::class, 'settings'])
         ->name('settings.show')
@@ -40,15 +40,19 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('transaction')->as('transaction.')->group(function () {
         Route::resource('incoming', \App\Http\Controllers\IncomingLetterController::class);
+        Route::post('outgoing/create/preview', [\App\Http\Controllers\OutgoingLetterController::class, 'letter_preview'])->name("outgoing.create_preview");
         Route::resource('outgoing', \App\Http\Controllers\OutgoingLetterController::class);
+        Route::get('outgoing/{letter}/print', [\App\Http\Controllers\OutgoingLetterController::class, 'print'])->name("outgoing.print");
+        Route::post('outgoing/{letter}/sign', [\App\Http\Controllers\OutgoingLetterController::class, 'sign'])->name("outgoing.sign");
         Route::resource('{letter}/disposition', \App\Http\Controllers\DispositionController::class)->except(['show']);
+        Route::get('{letter}/disposition/{disposition}/print', [\App\Http\Controllers\DispositionController::class, 'print'])->name('disposition.print');
     });
 
     Route::prefix('agenda')->as('agenda.')->group(function () {
         Route::get('incoming', [\App\Http\Controllers\IncomingLetterController::class, 'agenda'])->name('incoming');
-        Route::get('incoming/print', [\App\Http\Controllers\IncomingLetterController::class, 'print'])->name('incoming.print');
+        Route::get('incoming/print', [\App\Http\Controllers\IncomingLetterController::class, 'print_agenda'])->name('incoming.print_agenda');
         Route::get('outgoing', [\App\Http\Controllers\OutgoingLetterController::class, 'agenda'])->name('outgoing');
-        Route::get('outgoing/print', [\App\Http\Controllers\OutgoingLetterController::class, 'print'])->name('outgoing.print');
+        Route::get('outgoing/print', [\App\Http\Controllers\OutgoingLetterController::class, 'print_agenda'])->name('outgoing.print_agenda');
     });
 
     Route::prefix('gallery')->as('gallery.')->group(function () {
@@ -61,4 +65,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('status', \App\Http\Controllers\LetterStatusController::class)->except(['show', 'create', 'edit']);
     });
 
+    Route::get('rekapan', [\App\Http\Controllers\RekapanController::class, 'index'])
+        ->name('rekapan.show');
+    Route::get('rekapan/print', [\App\Http\Controllers\RekapanController::class, 'printRekapan'])
+        ->name('rekapan.print');
 });

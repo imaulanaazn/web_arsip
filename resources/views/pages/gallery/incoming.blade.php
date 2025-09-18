@@ -1,9 +1,9 @@
 @extends('layout.main')
 
 @section('content')
-    <x-breadcrumb
+    <!-- <x-breadcrumb
         :values="[__('menu.gallery.menu'), __('menu.gallery.incoming_letter')]">
-    </x-breadcrumb>
+    </x-breadcrumb> -->
 
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
         @foreach($data as $attachment)

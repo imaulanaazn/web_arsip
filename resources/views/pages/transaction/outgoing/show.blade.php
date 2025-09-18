@@ -1,9 +1,9 @@
 @extends('layout.main')
 
 @section('content')
-    <x-breadcrumb
+    <!-- <x-breadcrumb
         :values="[__('menu.transaction.menu'), __('menu.transaction.outgoing_letter'), __('menu.general.view')]">
-    </x-breadcrumb>
+    </x-breadcrumb> -->
 
     <x-letter-card :letter="$data">
         <div class="mt-2">

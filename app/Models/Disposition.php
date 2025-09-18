@@ -16,7 +16,7 @@ class Disposition extends Model
         'due_date',
         'content',
         'note',
-        'letter_status',
+        'status',
         'letter_id',
         'user_id'
     ];
@@ -25,7 +25,8 @@ class Disposition extends Model
         'formatted_due_date',
     ];
 
-    public function getFormattedDueDateAttribute(): string {
+    public function getFormattedDueDateAttribute(): string
+    {
         return Carbon::parse($this->due_date)->isoFormat('dddd, D MMMM YYYY');
     }
 
@@ -39,9 +40,22 @@ class Disposition extends Model
         return $query->whereDate('created_at', now()->addDays(-1));
     }
 
+    public function scopeThisMonth($query)
+    {
+        return $query->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year);
+    }
+
+    public function scopePreviousMonth($query)
+    {
+        $previousMonth = now()->subMonth();
+        return $query->whereMonth('created_at', $previousMonth->month)
+            ->whereYear('created_at', $previousMonth->year);
+    }
+
     public function scopeSearch($query, $search)
     {
-        return $query->when($search, function($query, $find) {
+        return $query->when($search, function ($query, $find) {
             return $query
                 ->orWhere('content', 'LIKE', '%' . $find . '%')
                 ->orWhere('to', 'LIKE', $find . '%');
@@ -78,7 +92,7 @@ class Disposition extends Model
      */
     public function status(): BelongsTo
     {
-        return $this->belongsTo(LetterStatus::class, 'letter_status', 'id');
+        return $this->belongsTo(LetterStatus::class, 'status', 'id');
     }
 
     /**

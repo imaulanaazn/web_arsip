@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('due_date');
             $table->text('content');
             $table->text('note')->nullable();
-            $table->foreignId('letter_status')->constrained('letter_statuses', 'id')->cascadeOnDelete();
+            $table->text('status');
             $table->foreignId('letter_id')->constrained('letters')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate();
             $table->timestamps();

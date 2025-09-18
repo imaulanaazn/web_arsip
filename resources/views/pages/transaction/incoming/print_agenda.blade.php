@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -7,32 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            text-align: center;
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .header {
+        text-align: center;
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        position: relative;
         }
-
-        h1 {
-            margin-bottom: 5px;
+        .logo {
+        position: absolute;
+        left: 20px;
+        top: 10px;
         }
-
-        h4 {
-            margin-top: 0;
-            font-weight: normal;
-        }
-
         table {
-            width: 100%;
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
         }
-
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
+        table, td {
+        border: 1px solid black;
         }
-
-        th, td {
-            padding: 10px;
+        td {
+        padding: 8px;
+        vertical-align: top;
+        }
+        .footer {
+        margin-top: 50px;
+        text-align: right;
         }
 
         #filter-section {
@@ -43,15 +45,13 @@
 </head>
 <body onload="window.print()">
 
-<h1>{{ $config['institution_name'] }}</h1>
-<h4>{{ $config['institution_address'] }}</h4>
-<hr>
+{!! $letterHead->content !!}
 
 <h2>{{ $title }}</h2>
 
 @if($since && $until && $filter)
     <div id="filter-section">
-        {{ __('model.letter.' . $filter) }}: {{ "$since - $until" }}
+        Periode: {{ "$since - $until" }}
         <br>
         Total: {{ count($data) }}
     </div>

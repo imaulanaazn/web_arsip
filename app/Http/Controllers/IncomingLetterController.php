@@ -9,6 +9,8 @@ use App\Models\Attachment;
 use App\Models\Classification;
 use App\Models\Config;
 use App\Models\Letter;
+use App\Models\LetterHead;
+use App\Models\LetterStatus;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -26,26 +28,35 @@ class IncomingLetterController extends Controller
     public function index(Request $request): View
     {
         return view('pages.transaction.incoming.index', [
-            'data' => Letter::incoming()->render($request->search),
+            // 'data' => Letter::incoming()->render($request->search),
+            'data' => Letter::incoming()->incomingFilter($request->since, $request->until, $request->filter, $request->status)->render($request->search),
+            'since' => $request->since,
+            'until' => $request->until,
+            'filter' => $request->filter,
             'search' => $request->search,
+            'query' => $request->getQueryString(),
+            'status' => $request->status,
+            'statuses' => LetterStatus::all(),
         ]);
     }
-
+    
     /**
      * Display a listing of the incoming letter agenda.
      *
      * @param Request $request
      * @return View
-     */
+    */
     public function agenda(Request $request): View
     {
         return view('pages.transaction.incoming.agenda', [
-            'data' => Letter::incoming()->agenda($request->since, $request->until, $request->filter)->render($request->search),
+            'data' => Letter::incoming()->incomingFilter($request->since, $request->until, $request->filter, $request->status)->render($request->search),
             'search' => $request->search,
             'since' => $request->since,
             'until' => $request->until,
             'filter' => $request->filter,
             'query' => $request->getQueryString(),
+            'status' => $request->status,
+            'statuses' => LetterStatus::all(),
         ]);
     }
 
@@ -53,12 +64,13 @@ class IncomingLetterController extends Controller
      * @param Request $request
      * @return View
      */
-    public function print(Request $request): View
+    public function print_agenda(Request $request): View
     {
         $agenda = __('menu.agenda.menu');
         $letter = __('menu.agenda.incoming_letter');
+        $letterHead = LetterHead::find(1);
         $title = App::getLocale() == 'id' ? "$agenda $letter" : "$letter $agenda";
-        return view('pages.transaction.incoming.print', [
+        return view('pages.transaction.incoming.print_agenda', [
             'data' => Letter::incoming()->agenda($request->since, $request->until, $request->filter)->get(),
             'search' => $request->search,
             'since' => $request->since,
@@ -66,6 +78,7 @@ class IncomingLetterController extends Controller
             'filter' => $request->filter,
             'config' => Config::pluck('value','code')->toArray(),
             'title' => $title,
+            'letterHead' => $letterHead,
         ]);
     }
 
@@ -78,6 +91,7 @@ class IncomingLetterController extends Controller
     {
         return view('pages.transaction.incoming.create', [
             'classifications' => Classification::all(),
+            'statuses' => LetterStatus::all(),
         ]);
     }
 
@@ -143,6 +157,7 @@ class IncomingLetterController extends Controller
         return view('pages.transaction.incoming.edit', [
             'data' => $incoming,
             'classifications' => Classification::all(),
+            'statuses' => LetterStatus::all(),
         ]);
     }
 

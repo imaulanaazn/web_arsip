@@ -115,6 +115,15 @@
                     <x-input-form name="name" :label="__('model.user.name')"/>
                     <x-input-form name="email" :label="__('model.user.email')" type="email"/>
                     <x-input-form name="phone" :label="__('model.user.phone')"/>
+                    <div class="mb-3">
+                        <label for="role">
+                            Role
+                        </label>
+                        <select name="role" id="role" class="form-control">
+                            <option value="tatausaha">Kepala Tata Usaha</option>
+                            <option value="kepsek">Kepala Sekolah</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -154,6 +163,15 @@
                         <input class="form-check-input" type="checkbox" name="reset_password" value="true" id="reset_password">
                         <label class="form-check-label" for="reset_password"> {{ __('model.user.reset_password') }} </label>
                     </div>
+                    <!-- <div class="mb-3">
+                        <label for="role">
+                            Role
+                        </label>
+                        <select name="role" id="role" class="form-control">
+                            <option value="tatausaha" {{ (isset($editUser) && $editUser->role == 'tatausaha') ? 'selected' : '' }}>Kepala Tata Usaha</option>
+                            <option value="kepsek" {{ (isset($editUser) && $editUser->role == 'kepsek') ? 'selected' : '' }}>Kepala Sekolah</option>
+                        </select>
+                    </div> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">

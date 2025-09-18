@@ -1,25 +1,5 @@
 <!DOCTYPE html>
-
-<!-- =========================================================
-* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
-==============================================================
-
-* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
-* Created by: ThemeSelection
-* License: You must have a valid license purchased in order to legally use the theme for your project.
-* Copyright ThemeSelection (https://themeselection.com)
-
-=========================================================
- -->
-<!-- beautify ignore:start -->
-<html
-    lang="id"
-    class="light-style layout-menu-fixed"
-    dir="ltr"
-    data-theme="theme-default"
-    data-assets-path="{{ asset('public/sneat/') }}"
-    data-template="vertical-menu-template-free"
->
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta
@@ -32,7 +12,7 @@
     <meta name="description" content=""/>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('logo-black.png') }}"/>
+    <link rel="icon" type="image/x-icon" href="{{ asset('logo-mabos.png') }}"/>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -54,7 +34,7 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{asset('sneat/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}"/>
     <link rel="stylesheet" href="{{asset('sneat/vendor/libs/sweetalert2/sweetalert2.min.css')}}"/>
-
+    
     <!-- Page CSS -->
     @stack('style')
 
@@ -64,6 +44,8 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('sneat/js/config.js') }}"></script>
+    <x-head.tinymce-config/>
+
 </head>
 
 <body>
@@ -120,6 +102,7 @@
 
 <!-- Main JS -->
 <script src="{{ asset('sneat/js/main.js')}}"></script>
+    
 <script>
     $(document).on('click', '.btn-delete', function (req) {
         Swal.fire({
@@ -163,6 +146,17 @@
         })
     </script>
 @endif
+
+<script>
+function submitForm(actionUrl, target) {
+    let form = document.getElementById('letterForm');
+    form.action = actionUrl;
+    if(target){
+        form.target = "_blank";
+    }
+    form.submit();
+}
+</script>
 
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>

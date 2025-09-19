@@ -37,7 +37,7 @@
 </head>
 <body onload="window.print()">
   <div class="header">
-    <img src="/logo-mabos.png" alt="Logo SMK" class="logo" width="80">
+    <img src="/logo.png" alt="Logo SMK" class="logo" width="80">
     <h3>DINAS PENDIDIKAN KABUPATEN PURBALINGGA</h3>
     <h2>SMK MA'ARIF NU BOBOTSARI</h2>
     <p>Alamat: Jl. Kp. Baru, Gandasuli, Kec. Bobotsari, Kabupaten Purbalingga, Jawa Tengah 53353 Telp. (021) XXXXXXXX</p>
@@ -80,7 +80,7 @@
         <p>Kepala Sekolah,</p>
 
         @if($letter->signed)
-            <img src="/logo-mabos.png" alt="Tanda Tangan" class="ttd" width="80" style="margin-right: 15px;">
+            <img src="/logo.png" alt="Tanda Tangan" class="ttd" width="80" style="margin-right: 15px;">
         @else
             <br><br><br>
         @endif
